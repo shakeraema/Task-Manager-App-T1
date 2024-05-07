@@ -31,8 +31,36 @@ app.post('/tasks', (req, res) => {
 
 // Read all tasks
 app.get('/tasks', (req, res) => {
-  res.json(tasks);
+    res.json(tasks);
+  });
+
+// Read all tasks filtered tasks
+app.get('/tasks', (req, res) => {
+    let filteredTasks = [...tasks];
+    // Filter tasks based on status
+    if (req.query.status) {
+        filteredTasks = filteredTasks.filter(task => task.status === req.query.status);
+    }
+    // Sort tasks based on title (ascending order)
+    if (req.query.sort === 'title') {
+        filteredTasks.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    // Return filtered and sorted tasks
+    res.json(filteredTasks);
+//   res.json(tasks);
 });
+
+// Search tasks by title or description
+app.get('/tasks/search', (req, res) => {
+    const { q } = req.query;
+    if (!q) {
+      return res.status(400).json({ error: 'Search query parameter (q) is required' });
+    }
+  
+    const searchResults = tasks.filter(task => task.title.includes(q) || task.description.includes(q));
+    res.json(searchResults);
+  });
+  
 
 // Update a task
 app.put('/tasks/:id', (req, res) => {

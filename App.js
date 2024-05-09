@@ -29,11 +29,6 @@ app.post('/tasks', (req, res) => {
   res.status(201).json(newTask);
 });
 
-// Read all tasks
-app.get('/tasks', (req, res) => {
-    res.json(tasks);
-  });
-
 // Read all tasks filtered tasks
 app.get('/tasks', (req, res) => {
     let filteredTasks = [...tasks];
@@ -47,7 +42,6 @@ app.get('/tasks', (req, res) => {
     }
     // Return filtered and sorted tasks
     res.json(filteredTasks);
-//   res.json(tasks);
 });
 
 // Search tasks by title or description
